@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+</head>
+<body>
+
+<nav  th:replace="_fragments :: nav" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <div class="right m-item m-mobile-hide menu">
+                <div class="ui dropdown  item">
+                    <div class="text">
+                        <span th:text="${session.user.username}">黄浩涛</span>
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" th:href="@{/admin/logout}" class="item">返回首页</a>
+                        <a href="#" th:href="@{/admin/logout}" class="item">注销</a>
+                    </div>
+                </div>
+            </div>
+            <!--</div>-->
+        </div>
+    </div>
+</nav>
+
+<!--导航-->
+<div class="ui container">
+    <div th:replace="_fragments :: menu(1)" class="ui visible inverted left vertical sidebar menu">
+        <a class="item">
+            <i class="desktop icon"></i>
+            工作台
+        </a>
+        <a class="item">
+            <i class="users icon"></i>
+            项目管理
+        </a>
+        <a class="item">
+            <i class="user icon"></i>
+            团队管理
+        </a>
+    </div>
+
+
+    <!--中间内容-->
+    <div class=" pusher">
+        <!--侧边栏-->
+        <div class="m-padded-tb-large">
+            <div class="ui container">
+                <div class="ui mobile reversed stackable grid m-margin-pusher-grid">
+                    <div class = "fourteen wide column">
+                        <!--头部-->
+                        <div class="ui top attached segment">
+                            <div class="ui fluid seven item menu">
+                                <div class="header item" th:text="${session.user.username}">
+                                    我
+                                </div>
+                                <a class="item" id="choose" th:href="@{/admin/projects/option?status=进行中}" >进行中的任务</a>
+                                <a class="item" th:href="@{/admin/projects}">全部任务</a>
+                                <a class="item" th:href="@{/admin/projects/day}">今日到期的任务</a>
+                                <a class="item" th:href="@{/admin/projects/week}">本周到期任务</a>
+                                <a class="item" th:href="@{/admin/projects/option?status=已完成}" th:classappend="${#strings.contains(#httpServletRequest.requestURL,'已完成')} ? 'active'">已完成的任务</a>
+                                <a class="item" th:href="@{/admin/projects/option?status=未开始}" th:classappend="${#strings.contains(#httpServletRequest.requestURL+'?'+ #httpServletRequest.queryString,'未开始')} ? 'active'">未开始的任务</a>
+                            </div>
+                        </div>
+                        <div class="ui attached segment">
+                            <div class="ui one column mobile reversed stackable grid">
+                                <div class="right aligned column">
+                                    <a href="#" th:href="@{/admin/projects/input}" class="ui mini right floated teal basic button">新增</a>
+                                </div>
+                            </div>
+                            <table class="ui celled compact table">
+                                <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th >项目名称</th>
+                                    <th>负责人</th>
+                                    <th >项目创建时间</th>
+                                    <th >项目结束时间</th>
+                                    <th >项目进度</th>
+                                    <th >操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="project,iterStat : ${page.content}" >
+                                    <td th:text="${iterStat.count}">1</td>
+                                    <td th:text="${project.title}">练习项目</td>
+                                    <td th:text="${project.user.username}">hht</td>
+                                    <td th:text="${#dates.format(project.createTime,'yyyy-MM-dd HH:mm')}">1545649874</td>
+                                    <td th:text="${#dates.format(project.endTime,'yyyy-MM-dd HH:mm')}">1545649874</td>
+                                    <td th:text="${project.progress}">1545649874</td>
+                                    <!--<td>-->
+                                    <!--<div class="ui indicating progress" data-value="3" data-total="20">-->
+                                    <!--<div class="bar"></div>-->
+                                    <!--<div class="label">添加图片</div>-->
+                                    <!--</div>-->
+                                    <!--</td>-->
+                                    <td>
+                                        <a href="#" th:href="@{/admin/projects/{id}/{sortId}/look(id=${project.id},sortId=${iterStat.count})}" class="ui mini compact teal basic button">查看</a>
+                                        <a href="#" th:href="@{/admin/projects/{id}/input(id=${project.id})}" class="ui mini teal compact basic button">编辑</a>
+                                        <a href="#" th:href="@{/admin/projects/{id}/delete(id=${project.id})}" onClick="return confirm('确定删除?');" class="ui compact mini red basic button">删除</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th colspan="6">
+                                        <div class="ui mini pagination menu" th:if="${page.totalPages}>1">
+                                            <a th:href="@{/admin/projects(page=${page.number}-1)}" class=" item" th:unless="${page.first}">上一页</a>
+                                            <a th:href="@{/admin/projects(page=${page.number}+1)}" class=" item" th:unless="${page.last}">下一页</a>
+                                        </div>
+                                    </th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                            <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+                                <i class="close icon"></i>
+                                <div class="header">提示：</div>
+                                <p th:text="${message}">恭喜，操作成功！</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script src="../../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
+<script>
+
+    $(".menu.toggle.button").click(function () {
+        $(".ui.sidebar")
+            .sidebar({
+                transition:'slide out' //默认uncover，可以取值push\overlay\slide along\slide out\scale down
+            })
+            .sidebar("toggle");
+
+    });
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+
+
+    $(document).ready(function () {
+        $('.ui.seven.menu a').each(function () {
+            if ($($(this))[0].href == String(window.location))
+                $(this).addClass('active');
+
+        });
+        if ("/admin/login"=== String(window.location.pathname))
+            $('#choose').addClass('active');
+        if ("/admin/projects/option"=== String(window.location.pathname + window.location.search))
+            $('#choose').addClass('active');
+    })
+
+
+
+    $('.visible.example .ui.sidebar')
+        .sidebar({
+            context: '.visible.example .bottom.segment'
+        })
+        .sidebar('hide')
+    ;
+
+    $('.ui.progress')
+        .progress('increment')
+    ;
+
+    $('.ui.progress')
+        .progress({
+            text: {
+                active  : 'Adding {value} of {total} photos',
+                success : '{total} Photos Uploaded!'
+            }
+        })
+    ;
+
+    $('.ui.dropdown').dropdown({
+        on : 'hover'
+    });
+
+    function page(obj) {
+        $("[name='page']").val($(obj).data("page"));
+        loaddata();
+    }
+
+    //消息提示关闭初始化
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade');
+        });
+
+
+</script>
+
+</body>
+</html>

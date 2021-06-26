@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+
+</head>
+<body>
+
+<!--导航-->
+<nav th:replace="_fragments :: nav" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <!--<div class="right item">-->
+                <!--<button class="ui inverted teal button">-->
+                    <!--返回首页-->
+                <!--</button>-->
+                <div class="right m-item m-mobile-hide menu">
+                    <div class="ui dropdown  item">
+                        <div class="text">
+                            <span >黄浩涛</span>
+                        </div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a href="#" th:href="@{/admin/logout}" class="item">返回首页</a>
+                            <a href="#" th:href="@{/admin/logout}" class="item">注销</a>
+                        </div>
+                    </div>
+                </div>
+            <!--</div>-->
+        </div>
+    </div>
+</nav>
+
+
+<div class="ui container">
+    <!--侧边栏-->
+    <div th:replace="_fragments :: menu(3)" class="ui visible inverted left vertical sidebar menu">
+        <a class="item">
+            <i class="desktop icon"></i>
+            工作台
+        </a>
+        <a class="item">
+            <i class="users icon"></i>
+            项目管理
+        </a>
+        <a class="item">
+            <i class="user icon"></i>
+            团队管理
+        </a>
+    </div>
+    <!--中间内容-->
+    <div class="pusher">
+    <!--侧边栏-->
+        <div class="m-padded-tb-large">
+            <div class="ui container">
+                <div class="ui ui mobile reversed stackable grid m-margin-pusher-grid">
+                <div class = "fourteen wide column">
+                    <div class="ui top attached compact segment form">
+                        <input type="hidden" name="page">
+                        <div class="fields ">
+                            <div class="require field">
+                                <input type="text" name="title" placeholder="标题">
+                            </div>
+                            <div class="four wide field">
+                                <div class="two fields">
+                                    <div class="field">
+                                        <input type="text" name="year" maxlength="4" placeholder="year">
+                                    </div>
+                                    <div class="field">
+                                        <input type="text" name="month" maxlength="2" placeholder="month">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inline field">
+                                <div class="ui labeled action input">
+                                    <div class="ui type selection dropdown">
+                                        <!--<input type="hidden" name="typeId">-->
+                                        <input type="hidden" name="status">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">状态</div>
+                                        <div class="menu">
+                                            <div class="item" data-value="未开始">未开始</div>
+                                            <div class="item" data-value="进行中">进行中</div>
+                                            <div class="item" data-value="已完成">已完成</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button id="clear-btn" class="ui compact button">clear</button>
+                            </div>
+                            <div class="field">
+                                <button  type="button" id="search-btn" class="ui small teal basic button"><i class="search icon"></i>搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui attached segment">
+                        <div class="ui one column mobile reversed stackable grid">
+                            <div class="right aligned column">
+                                <!--<a href="#"  class="ui mini right floated teal basic button">下载</a>-->
+                            </div>
+                        </div>
+                        <div id="table-container">
+                            <table th:fragment="statisticList" class="ui compact celled table">
+                                <thead>
+                                <tr>
+                                    <th>项目编号</th>
+                                    <th>项目名称</th>
+                                    <th>负责人</th>
+                                    <th>创建时间</th>
+                                    <th>结束时间</th>
+                                    <th >项目进度</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="project,iterStat : ${page.content}">
+                                    <td th:text="${iterStat.count}">1</td>
+                                    <td th:text="${project.title}">练习项目</td>
+                                    <td th:text="${project.user.username}">hht</td>
+                                    <td th:text="${#dates.format(project.createTime,'yyyy-MM-dd HH:mm')}">1545649874</td>
+                                    <td th:text="${#dates.format(project.endTime,'yyyy-MM-dd HH:mm:ss')}">1545649874</td>
+                                    <td th:text="${project.progress}">
+                                        <!--<div class="ui indicating progress" data-value="1" data-total="5" id="example4">-->
+                                        <!--<div class="bar">-->
+                                        <!--<div class="progress"></div>-->
+                                        <!--</div>-->
+                                        <!--&lt;!&ndash;                                            <div class="label">添加照片</div>&ndash;&gt;-->
+                                        <!--</div>-->
+                                    </td>
+                                    <td>
+                                        <a href="#" th:href="@{/admin/projects/{id}/{sortId}/look(id=${project.id},sortId=${iterStat.count})}" class="ui mini teal basic button">查看</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th colspan="6">
+                                        <div class="ui mini pagination menu" th:if="${page.totalPages}>1">
+                                            <a onclick="page(this)" th:attr="data-page=${page.number}-1" class=" item" th:unless="${page.first}">上一页</a>
+                                            <a onclick="page(this)" th:attr="data-page=${page.number}+1" class=" item" th:unless="${page.last}">下一页</a>
+                                        </div>
+                                    </th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+                            <i class="close icon"></i>
+                            <div class="header">提示：</div>
+                            <p th:text="${message}">恭喜，操作成功！</p>
+                        </div>
+                    </div>
+                    <!--选项-->
+
+                </div>
+            </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script>
+    $(".menu.toggle").click(function () {
+        $(".ui.sidebar")
+            .sidebar("toggle");
+
+    });
+
+    $('.visible.example .ui.sidebar')
+        .sidebar({
+            context: '.visible.example .bottom.segment'
+        })
+        .sidebar('hide')
+    ;
+
+
+    $('#example4')
+        .progress('increment')
+    ;
+
+    $('.ui.dropdown').dropdown({
+        on : 'hover'
+    });
+
+    //消息提示关闭初始化
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade');
+        });
+
+    function page(obj) {
+        $("[name='page']").val($(obj).data("page"));
+        loaddata();
+    }
+
+    $("#search-btn").click(function () {
+        loaddata();
+    });
+
+    $('#clear-btn')
+        .on('click', function() {
+            $('.ui.type.dropdown')
+                .dropdown('clear')
+            ;
+        })
+    ;
+
+    function loaddata() {
+        $("#table-container").load(/*[[@{/admin/statistics/search}]]*/"/admin/statistics/search",{
+            title : $("[name='title']").val(),
+            typeId : $("[name='typeId']").val(),
+            year : $("[name='year']").val(),
+            month : $("[name='month']").val(),
+            status : $("[name='status']").val(),
+            page : $("[name='page']").val()
+        });
+    }
+    
+    
+</script>
+
+</body>
+</html>

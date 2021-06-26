@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:replace="${title}">首页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+    <!-- 引入 layui.js -->
+    <script src="//unpkg.com/layui@2.6.8/dist/layui.js"></script>
+    <!-- 引入 layui.css -->
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+
+
+</head>
+<body>
+
+<nav th:fragment="nav" class="ui inverted attached segment  m-padded-tb-mini" >
+    <div class="ui container">
+        <div class="ui inverted secondary menu">
+            <h3 class="m-text-font-family left item">项目流程管控平台</h3>
+            <div class="right  menu">
+                <div class="ui dropdown  item">
+                    <div class="text">
+                        <img src="https://unsplash.it/100/100?image=1005" th:src="@{/images/miao.jpg}" alt="" class="ui avatar image">
+                        <span th:text="${session.user.username}">黄浩涛</span>
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" th:href="@{/admin/projects/option}" class="item">返回首页</a>
+                        <a href="#" th:href="@{/admin/logout}" class="item">注销</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui menu black toggle icon button m-left-top">
+        <i class="sidebar icon"></i>
+    </div>
+</nav>
+
+<!--侧边栏-->
+<div th:fragment="menu(n)" class="ui sidebar inverted vertical menu">
+    <h3 class="m-text-font-family item m-padded-ce">管理后台</h3>
+    <a class="item" th:href="@{/admin/projects/option?status=进行中}" th:classappend="${n==1} ? 'active'">
+        <i class="users icon"></i>
+        项目管理
+    </a>
+    <a class="item" th:href="@{/admin/users}" th:classappend="${n==2} ? 'active'">
+        <i class="user icon"></i>
+        团队管理
+    </a>
+    <a class="item" th:href="@{/admin/statistics}" th:classappend="${n==3} ? 'active'">
+        <i class="user icon"></i>
+        项目统计
+    </a>
+</div>
+
+<!--首页导航栏-->
+<div class = "thirteen wide column">
+    <!--头部-->
+    <div th:fragment="taskMenu(n)" class="ui top attached segment">
+        <div class="ui fluid six item menu">
+            <a class="item" th:href="@{/admin/projects/option?status=进行中}">进行中的任务</a>
+            <a class="item" th:href="@{/admin/projects}">全部任务</a>
+            <a class="item">今日到期的任务</a>
+            <a class="item">本周到期任务</a>
+            <a class="item" th:href="@{/admin/projects/option?status=已完成}">已完成的任务</a>
+            <a class="item" th:href="@{/admin/projects/option?status=未开始}">未开始的任务</a>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

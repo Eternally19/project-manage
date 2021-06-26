@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目发布</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+</head>
+<body>
+
+<!--导航-->
+<nav th:replace="_fragments :: nav" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <div class="right item">
+                <button class="ui inverted teal button">
+                    返回首页
+                </button>
+                <button class="ui inverted blue button">
+                    退出系统
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="ui container">
+    <!--侧边栏-->
+    <div th:replace="_fragments :: menu(2)" class="ui visible inverted left vertical sidebar menu">
+        <a class="item">
+            <i class="desktop icon"></i>
+            工作台
+        </a>
+        <a class="item">
+            <i class="users icon"></i>
+            项目管理
+        </a>
+        <a class="item">
+            <i class="user icon"></i>
+            团队管理
+        </a>
+    </div>
+    <!--中间内容-->
+    <div class="pusher">
+        <div class="m-padded-tb-large">
+            <div class="ui container">
+                <div class="ui mobile reversed stackable grid m-user-margin-pusher-grid">
+                    <div class = "twelve wide column">
+                        <div class="ui top attached segment">
+                            <div class="ui one column grid">
+                                <div class="column">
+                                    <h3 class="ui teal header">添加成员</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui attached segment">
+                            <form action="#" method="post"  th:object="${user}" th:action="*{id}==null ? @{/admin/users} : @{/admin/users/{id}(id=*{id})}" class="ui form">
+                                <input type="hidden" name="id" th:value="*{id}">
+                                <div class="two fields m-padded-tb-small">
+                                    <div class="required field">
+                                        <div class="ui left labeled input">
+                                            <label class="ui teal basic label">姓名</label>
+                                            <input type="text" name="username" placeholder="姓名" th:value="*{username}">
+                                        </div>
+                                    </div>
+                                    <div class="required field">
+                                        <div class="ui left labeled action input">
+                                            <label class="ui compact teal basic label">身份</label>
+                                            <div class="ui fluid selection dropdown">
+                                                <input type="hidden" name="type" th:value="*{type}">
+                                                <i class="dropdown icon"></i>
+                                                <div class="default text">身份</div>
+                                                <div class="menu">
+                                                    <div class="item" data-value="1">主管</div>
+                                                    <div class="item" data-value="2">普通成员</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="two fields m-padded-tb-small">
+                                    <div class="required field">
+                                        <div class="ui left labeled input">
+                                            <label class="ui teal basic label">联系电话</label>
+                                            <input type="text" name="phone" placeholder="联系电话" th:value="*{phone}">
+                                        </div>
+                                    </div>
+                                    <div class="required field">
+                                        <div class="ui left labeled input">
+                                            <label class="ui teal basic label">邮箱</label>
+                                            <input type="text" name="email" placeholder="邮箱" th:value="*{email}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="fields m-padded-tb-small">
+                                    <div class="eight wide required field">
+                                        <div class="ui left labeled input">
+                                            <label class="ui teal basic label">密码</label>
+                                            <input type="text" name="password" placeholder="密码" th:value="*{password}">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="ui error message"></div>
+
+                                <div class="ui negative message" th:if="${#fields.hasErrors('username')}"  >
+                                    <i class="close icon"></i>
+                                    <div class="header">验证失败</div>
+                                    <p th:errors="*{username}">提交信息不符合规则</p>
+                                </div>
+
+                                <!--/*/
+                                <div class="ui negative message" th:if="${#fields.hasErrors('type')}"  >
+                                    <i class="close icon"></i>
+                                    <div class="header">验证失败</div>
+                                    <p th:errors="*{type}">提交信息不符合规则</p>
+                                </div>
+                                /*/-->
+                                <!--/*/
+                                <div class="ui negative message" th:if="${#fields.hasErrors('phone')}"  >
+                                    <i class="close icon"></i>
+                                    <div class="header">验证失败</div>
+                                    <p th:errors="*{phone}">提交信息不符合规则</p>
+                                </div>
+                                /*/-->
+                                <!--/*/
+                                <div class="ui negative message" th:if="${#fields.hasErrors('email')}"  >
+                                    <i class="close icon"></i>
+                                    <div class="header">验证失败</div>
+                                    <p th:errors="*{email}">提交信息不符合规则</p>
+                                </div>
+                                /*/-->
+                                <!--/*/
+                                <div class="ui negative message" th:if="${#fields.hasErrors('password')}"  >
+                                    <i class="close icon"></i>
+                                    <div class="header">验证失败</div>
+                                    <p th:errors="*{password}">提交信息不符合规则</p>
+                                </div>
+                                /*/-->
+                                <div class="ui right aligned container m-padded-tb-top-max">
+                                    <button type="button" class="ui button" onclick="window.history.go(-1)" >取消</button>
+                                    <button class="ui teal submit button">添加</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<script>
+
+
+    $(".menu.toggle").click(function () {
+        $(".ui.sidebar")
+            .sidebar({
+                transition:'slide out' //默认uncover，可以取值push\overlay\slide along\slide out\scale down
+            })
+            .sidebar("toggle");
+
+    });
+
+    $('.ui.dropdown').dropdown({
+        on : 'hover'
+    });
+
+    $('.ui.form').form({
+        fields : {
+            name : {
+                identifier: 'username',
+                rules: [{
+                    type : 'empty',
+                    prompt: '标题：请输入姓名'
+                }]
+            },
+            type : {
+                identifier: 'type',
+                rules: [{
+                    type : 'empty',
+                    prompt: '标题：请选择你的身份'
+                }]
+            },
+            phone : {
+                identifier: 'phone',
+                rules: [{
+                    type : 'empty',
+                    prompt: '标题：请输入联系电话'
+                }]
+            },
+            email : {
+                identifier: 'email',
+                rules: [{
+                    type : 'empty',
+                    prompt: '标题：请输入邮箱地址'
+                }]
+            },
+            password : {
+                identifier: 'password',
+                rules: [{
+                    type : 'empty',
+                    prompt: '标题：请输入密码'
+                }]
+            }
+
+        }
+    });
+
+    //消息提示关闭初始化
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade');
+        });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/projectmanage?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 5000
+          batch_versioned_data: true
+          order_inserts: true
+          order_updates: true
+  mail:
+    host: smtp.qq.com
+    username: 1779797461@qq.com
+    password: pxadgcyocvosdaie
+    port: 465
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            enable: true
+    default-encoding: UTF-8
+logging:
+  level:
+    root: info
+    com.hciot: debug
+  file:
+    name: log/projectManage-dev.log
+
+server:
+  port: 8080

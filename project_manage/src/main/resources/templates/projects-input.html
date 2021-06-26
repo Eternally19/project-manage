@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目发布</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+</head>
+<body>
+    
+    <!--导航-->
+<nav th:replace="_fragments :: nav" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <div class="right item">
+                <button class="ui inverted teal button">
+                    设为模板
+                </button>
+                <button class="ui inverted teal button">
+                    返回首页
+                </button>
+                <button class="ui inverted blue button">
+                    退出系统
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="ui bottom attached segment pushable">
+    <!--侧边栏-->
+    <div th:replace="_fragments :: menu(1)" class="ui visible inverted left vertical sidebar menu">
+        <a class="item">
+            <i class="desktop icon"></i>
+            工作台
+        </a>
+        <a class="item">
+            <i class="users icon"></i>
+            项目管理
+        </a>
+        <a class="item">
+            <i class="user icon"></i>
+            团队管理
+        </a>
+    </div>
+    <!--中间内容-->
+    <div class="pusher">
+        <div class="ui container">
+            <div class="ui mobile reversed stackable grid">
+                <div class = "twelve wide column">
+                    <div class="ui top attached segment">
+                        <div class="ui one column grid">
+                            <div class="column">
+                                <h3 class="ui teal header">新建项目</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui attached segment">
+                        <form action="#" th:object="${project}" th:action="@{/admin/projects}" method="post" class="ui form">
+                            <input type="hidden" name="id" th:value="*{id}">
+                            <div class="two fields m-padded-tb-small">
+                              <div class="require field">
+                                <div class="ui left labeled input">
+                                    <label class="ui teal basic label">项目名称</label>
+                                    <input type="text" name="title" th:value="*{title}" placeholder="项目名称">
+                                </div>
+                              </div>
+                              <div class="require field">
+                                <div class="ui left labeled action input">
+                                  <label class="ui compact teal basic label">项目类别</label>
+                                    <div class="ui fluid selection dropdown">
+                                        <input type="hidden" name="type.id" th:value="*{type}!=null ? *{type.id}">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">项目类别</div>
+                                        <div class="menu">
+                                            <div th:each="type : ${types}" class="item" data-value="1" th:data-value="${type.id}" th:text="${type.name}">错误日志</div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                    
+                            <div class="require field m-padded-tb-small">
+                              <div class="ui left labeled input">
+                                <label class="ui teal basic label">项目描述</label>
+                                <textarea rows="4" placeholder="项目描述" name="context"  th:text="*{context}"></textarea>
+                              </div>
+                            </div>
+                            
+                    
+                            <div class="ui error message"></div>
+                    
+                            <div class="ui right aligned container m-padded-tb-top-max">
+                              <button type="button" class="ui button" onclick="window.history.go(-1)" >取消</button>
+                              <button  class="ui teal submit button">发布</button>
+                            </div>
+                    
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+
+<script>
+
+
+    $('.menu.toggle').click(function () {
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+      on : 'hover'
+    });
+
+    $('.ui.form').form({
+        fields : {
+            title : {
+                identifier: 'title',
+                rules: [{
+                    type : 'empty',
+                    prompt: '标题：请输入项目名称'
+                }]
+            },
+            typeId : {
+                identifier: 'typeId',
+                rules: [{
+                    type : 'empty',
+                    prompt: '标题：请选择项目类别'
+                }]
+            },
+            content : {
+                identifier: 'content',
+                rules: [{
+                    type : 'empty',
+                    prompt: '标题：请输入项目描述'
+                }]
+            },
+            selectTime : {
+                identifier: 'selectTime',
+                rules: [{
+                    type : 'empty',
+                    prompt: '标题：请输入结束时间'
+                }]
+            }
+
+
+        }
+    });
+
+    //消息提示关闭初始化
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade');
+        });
+
+  </script>
+
+</body>
+</html>

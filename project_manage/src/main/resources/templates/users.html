@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>团队管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+</head>
+<body>
+
+    <!--导航-->
+    <nav th:replace="_fragments :: nav" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+        <div class="ui container">
+            <div class="ui inverted secondary stackable menu">
+                <div class="m-item right m-mobile-hide menu">
+                    <button class="ui inverted teal button">
+                        返回首页
+                    </button>
+                    <button class="ui inverted blue button">
+                        退出系统
+                    </button>
+                    <div class="ui dropdown  item">
+                        <div class="text">
+                            <img class="ui avatar image" src="https://unsplash.it/100/100?image=1005">
+                            李仁密
+                        </div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a href="#" class="item">注销</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="ui container">
+        <!--侧边栏-->
+        <div th:replace="_fragments :: menu(2)" class="ui visible inverted left vertical sidebar menu">
+            <a class="item">
+                <i class="desktop icon"></i>
+                工作台
+            </a>
+            <a class="item">
+                <i class="users icon"></i>
+                项目管理
+            </a>
+            <a class="item">
+                <i class="user icon"></i>
+                团队管理
+            </a>
+        </div>
+        <!--中间内容-->
+        <div class="m-padded-tb-large">
+            <div class="pusher">
+                <!--侧边栏-->
+                <div class="ui container">
+                    <div class="ui mobile reversed stackable grid m-user-margin-pusher-grid">
+                        <div class = "twelve wide column">
+                            <div class="ui top attached segment">
+                                <div class="ui one column grid">
+                                    <div class="column">
+                                        <h3 class="ui teal header">团队管理</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+                                <i class="close icon"></i>
+                                <div class="header">提示：</div>
+                                <p th:text="${message}">恭喜，操作成功！</p>
+                            </div>
+                            <div class="ui attached segment m-padded-tb-small m-shadow-small">
+                                <div class="ui one column mobile reversed stackable grid">
+                                    <div class="right aligned column" >
+                                        <a th:if="${session.user.type==1}" href="#" th:href="@{/admin/users/input}" class="ui mini right floated teal basic button">新增</a>
+                                    </div>
+                                </div>
+                                <table class="ui celled table">
+                                    <thead>
+                                    <tr>
+                                        <th>成员编号</th>
+                                        <th>姓名</th>
+                                        <th class="two wide">身份</th>
+                                        <th class="three wide">联系电话</th>
+                                        <th class="four wide">邮箱</th>
+                                        <th class="three wide" >操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="user : ${page.content}">
+                                        <td th:text="${user.id}">1</td>
+                                        <td th:text="${user.username}">黄浩涛</td>
+                                        <td th:unless="${user.type==1}">普通成员</td>
+                                        <td th:if="${user.type==1}">主管</td>
+                                        <td th:text="${user.phone}">18316650428</td>
+                                        <td th:text="${user.email}">1545649874@qq.com</td>
+                                        <td >
+                                            <a th:if="${session.user.type==1 || user.username==session.user.username}" href="#" th:href="@{/admin/users/{id}/input(id=${user.id})}" class="ui mini teal basic button">编辑</a>
+                                            <a th:if="${session.user.type==1 || user.username==session.user.username}" href="#" th:href="@{/admin/users/{id}/delete(id=${user.id})}" onClick="return confirm('确定删除?');" class="ui mini red basic button">删除</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th colspan="6">
+                                            <div class="ui mini pagination menu" th:if="${page.totalPages}>1">
+                                                <a th:href="@{/admin/users(page=${page.number}-1)}" class=" item" th:unless="${page.first}">上一页</a>
+                                                <a  th:href="@{/admin/users(page=${page.number}+1)}" class=" item" th:unless="${page.last}">下一页</a>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        $(".menu.toggle").click(function () {
+            $(".ui.sidebar")
+                .sidebar({
+                    transition:'slide out' //默认uncover，可以取值push\overlay\slide along\slide out\scale down
+                })
+                .sidebar("toggle");
+
+        });
+
+        $('.ui.dropdown').dropdown({
+            on : 'hover'
+        });
+
+
+        //消息提示关闭初始化
+        $('.message .close')
+            .on('click', function () {
+                $(this)
+                    .closest('.message')
+                    .transition('fade');
+            });
+    </script>
+
+
+</body>
+</html>

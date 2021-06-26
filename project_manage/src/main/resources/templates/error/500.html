@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+</head>
+<body>
+
+<!--导航-->
+<nav th:replace="_fragments :: nav" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <div class="right item">
+                <button class="ui inverted teal button">
+                    设为模板
+                </button>
+                <button class="ui inverted teal button">
+                    返回首页
+                </button>
+                <button class="ui inverted blue button">
+                    退出系统
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!--导航-->
+<div class="ui container">
+    <div th:replace="_fragments :: menu(1)" class="ui visible inverted left vertical sidebar menu">
+        <a class="item">
+            <i class="desktop icon"></i>
+            工作台
+        </a>
+        <a class="item">
+            <i class="users icon"></i>
+            项目管理
+        </a>
+        <a class="item">
+            <i class="user icon"></i>
+            团队管理
+        </a>
+    </div>
+
+
+    <div class="pusher">
+        <div class="m-container-tiny m-padded-tb-massive">
+            <div class="ui error message m-padded-tb-small" >
+                <div class="ui container">
+                    <h2>500</h2>
+                    <p>对不起，服务异常，请联系管理员</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+</body>
+</html>
